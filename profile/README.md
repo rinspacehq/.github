@@ -17,6 +17,70 @@
 | [`gitea`](https://github.com/rinspacehq/gitea) | 芥子环使用的 Gitea fork，承载内容源码与协作流程 | [`v1.27.2-rinspace.1`](https://github.com/rinspacehq/gitea/releases/tag/v1.27.2-rinspace.1) | MIT |
 | [`mastodon`](https://github.com/rinspacehq/mastodon) | 芥子环里世界使用的 Mastodon fork | [`rinspace-2026.09.26.2`](https://github.com/rinspacehq/mastodon/releases/tag/rinspace-2026.09.26.2) | AGPL-3.0 |
 
+## 架构概览
+
+```mermaid
+flowchart TB
+    USER["读者与创作者"]
+
+    subgraph EXPERIENCE["双世界体验与创作"]
+        OUTER["表世界 Web<br/>React · TypeScript · Vite"]
+        EDITOR["Markdown 编辑器<br/>Milkdown · Crepe · CodeMirror"]
+        INNER["里世界社区<br/>Mastodon · Rails · React"]
+    end
+
+    subgraph PRODUCT["产品服务"]
+        API["业务 API / Runtime<br/>Go · Gin"]
+        IDENTITY["统一身份<br/>CloudBase Auth · OIDC"]
+        CONTROL["Control Plane<br/>发布 · 绑定 · 对账"]
+        GORSE["Gorse<br/>推荐排序"]
+    end
+
+    subgraph SOURCE["源码与协作"]
+        GITEA["Gitea<br/>Git 历史 · Pull Request · Issue"]
+    end
+
+    subgraph RENDERING["渲染与发布"]
+        RENDERER["Rinspace Renderer<br/>Go API · PostgreSQL · Durable Jobs"]
+        ENGINES["渲染引擎<br/>Markdown · KaTeX · MathJax · Shiki<br/>LaTeXML · TeX SVG · Typst · PDF"]
+    end
+
+    subgraph DATA["数据与制品"]
+        DATABASE["CloudBase PostgreSQL<br/>产品状态 · 发布索引"]
+        STORAGE["CloudBase Storage<br/>内容寻址的公开资源"]
+        SOCIAL["里世界数据层<br/>PostgreSQL · Redis · 对象存储"]
+    end
+
+    USER --> OUTER
+    USER --> INNER
+    OUTER --> EDITOR
+    OUTER <--> API
+    OUTER --> IDENTITY
+    INNER -->|OIDC| IDENTITY
+    EDITOR -->|保存与发布| API
+    API -->|精确 Git 提交| GITEA
+    GITEA -->|持久发布事件| CONTROL
+    CONTROL -->|源码身份与任务| RENDERER
+    RENDERER <--> ENGINES
+    RENDERER -->|内容寻址资源| STORAGE
+    RENDERER -->|签名完成事件| CONTROL
+    CONTROL -->|激活验证版本| DATABASE
+    API <--> DATABASE
+    OUTER -->|读取公开资源| STORAGE
+    CONTROL -->|身份、资料与 Tag 绑定| INNER
+    INNER <--> SOCIAL
+    INNER -->|可见候选与反馈| GORSE
+    GORSE -->|仅排序| INNER
+```
+
+| 设计原则 | 实现方式 |
+| --- | --- |
+| 源码可追溯 | 长文以 Gitea 中的 Git 提交为权威源码，协作保留 Pull Request、Issue 和完整历史。 |
+| 发布不可变 | 发布绑定精确提交和制品摘要；新版本验证失败时继续提供上一成功版本。 |
+| 职责分离 | 产品服务负责业务与身份，Control Plane 负责编排，Renderer 通过独立引擎生成结果。 |
+| 两个世界、一个身份 | 表世界承载知识内容，里世界承载本地社区；二者以稳定主体和 OIDC 连接。 |
+| 明确事实来源 | Gitea 保存长文源码，Mastodon 保存社交关系与推文，Gorse 只对候选内容排序。 |
+
 ## 技术方向
 
 芥子环将 Tag 视为具有稳定身份、上下文和生命周期的知识节点。长文源码与历史由 Git 保存，发布过程绑定精确提交；Control Plane 验证源码和任务身份，Renderer 生成不可变结果，验证通过后再由 Web 提供阅读。
