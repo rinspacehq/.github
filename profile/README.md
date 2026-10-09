@@ -128,7 +128,21 @@ flowchart TB
 
 ## 致谢
 
-芥子环建立在自由软件社区长期维护的成果之上。感谢 [`Mastodon`](https://github.com/mastodon/mastodon)、[`Gitea`](https://github.com/go-gitea/gitea)、[`Milkdown`](https://github.com/Milkdown/milkdown)、[`Typst`](https://github.com/typst/typst)、[`LaTeXML`](https://github.com/brucemiller/LaTeXML)、[`CodeMirror`](https://github.com/codemirror) 和 [`KaTeX`](https://github.com/KaTeX/KaTeX) 的维护者与贡献者。
+芥子环由许多开源项目共同支撑。我们感谢以下项目的维护者与贡献者。
+
+| 领域 | 开源项目 | 在芥子环中的作用 |
+| --- | --- | --- |
+| 社区与协作 | [`Git`](https://git-scm.com/) · [`Gitea`](https://github.com/go-gitea/gitea) · [`Mastodon`](https://github.com/mastodon/mastodon) · [`Gorse`](https://github.com/gorse-io/gorse) | 源码历史、内容协作、里世界社区和推荐排序 |
+| Web 基础 | [`React`](https://github.com/facebook/react) · [`React Router`](https://github.com/remix-run/react-router) · [`TypeScript`](https://github.com/microsoft/TypeScript) · [`Vite`](https://github.com/vitejs/vite) · [`Tailwind CSS`](https://github.com/tailwindlabs/tailwindcss) · [`i18next`](https://github.com/i18next/i18next) · [`SWR`](https://github.com/vercel/swr) · [`Zustand`](https://github.com/pmndrs/zustand) | 表世界前端、路由、样式、国际化和客户端状态 |
+| 界面与交互 | [`Radix Primitives`](https://github.com/radix-ui/primitives) · [`Motion`](https://github.com/motiondivision/motion) · [`Lucide`](https://github.com/lucide-icons/lucide) · [`Bootstrap Icons`](https://github.com/twbs/icons) · [`Phosphor Icons`](https://github.com/phosphor-icons/core) | 可访问组件、动效和图标系统 |
+| 写作与编辑 | [`Milkdown`](https://github.com/Milkdown/milkdown) / Crepe · [`ProseMirror`](https://github.com/ProseMirror/prosemirror) · [`CodeMirror`](https://github.com/codemirror/dev) | Markdown 写作、富文本结构和代码编辑 |
+| 内容与渲染 | [`unified`](https://github.com/unifiedjs/unified) · [`remark`](https://github.com/remarkjs/remark) · [`rehype`](https://github.com/rehypejs/rehype) · [`KaTeX`](https://github.com/KaTeX/KaTeX) · [`MathJax`](https://github.com/mathjax/MathJax-src) · [`Shiki`](https://github.com/shikijs/shiki) | Markdown 语法树、数学公式和代码高亮 |
+| 排版与文档 | [`Typst`](https://github.com/typst/typst) · [`LaTeXML`](https://github.com/brucemiller/LaTeXML) · [`TeX Live`](https://tug.org/texlive/) · [`dvisvgm`](https://github.com/mgieseki/dvisvgm) · [`PDF.js`](https://github.com/mozilla/pdf.js) | 文档编译、LaTeX 转换、SVG 生成和 PDF 能力 |
+| 服务与数据 | [`Go`](https://github.com/golang/go) · [`Gin`](https://github.com/gin-gonic/gin) · [`Node.js`](https://github.com/nodejs/node) · [`Ruby on Rails`](https://github.com/rails/rails) · [`Sidekiq`](https://github.com/sidekiq/sidekiq) · [`PostgreSQL`](https://github.com/postgres/postgres) · [`Redis`](https://github.com/redis/redis) · [`CloudBase JavaScript SDK`](https://github.com/TencentCloudBase/cloudbase-js-sdk) | 产品服务、渲染任务、社区运行时、持久化和会话基础设施 |
+| 工程质量与文档 | [`Playwright`](https://github.com/microsoft/playwright) · [`Vitest`](https://github.com/vitest-dev/vitest) · [`Testing Library`](https://github.com/testing-library) · [`axe-core`](https://github.com/dequelabs/axe-core) · [`Mermaid`](https://github.com/mermaid-js/mermaid) | 浏览器验证、单元测试、可访问性检查和技术图示 |
+| 字体 | [`Noto Sans SC`](https://github.com/google/fonts/tree/main/ofl/notosanssc) · [`IBM Plex`](https://github.com/IBM/plex) · [`Newsreader`](https://github.com/productiontype/Newsreader) · [`Fira Code`](https://github.com/tonsky/FiraCode) · [`JetBrains Mono`](https://github.com/JetBrains/JetBrainsMono) · [`WenQuanYi Zen Hei`](https://sourceforge.net/projects/wqy/files/wqy-zenhei/) | 中文正文、界面、代码和文档排版 |
+
+这里列出的是产品架构中的主要上游项目。各仓库的第三方声明、锁文件与发行 SBOM 记录具体版本和完整依赖。
 
 ---
 
