@@ -17,6 +17,70 @@ Rinspace is a platform for long-form publishing, knowledge, and community, organ
 | [`gitea`](https://github.com/rinspacehq/gitea) | Rinspace's Gitea fork for content source and collaboration workflows | [`v1.27.2-rinspace.1`](https://github.com/rinspacehq/gitea/releases/tag/v1.27.2-rinspace.1) | MIT |
 | [`mastodon`](https://github.com/rinspacehq/mastodon) | Mastodon fork used by the Rinspace inner world | [`rinspace-2026.09.26.2`](https://github.com/rinspacehq/mastodon/releases/tag/rinspace-2026.09.26.2) | AGPL-3.0 |
 
+## Architecture
+
+```mermaid
+flowchart TB
+    USER["Readers and authors"]
+
+    subgraph EXPERIENCE["Two-world experience and authoring"]
+        OUTER["Outer-world Web<br/>React · TypeScript · Vite"]
+        EDITOR["Markdown editor<br/>Milkdown · Crepe · CodeMirror"]
+        INNER["Inner-world community<br/>Mastodon · Rails · React"]
+    end
+
+    subgraph PRODUCT["Product services"]
+        API["Business API / Runtime<br/>Go · Gin"]
+        IDENTITY["Unified identity<br/>CloudBase Auth · OIDC"]
+        CONTROL["Control Plane<br/>Publication · bindings · reconciliation"]
+        GORSE["Gorse<br/>Recommendation ranking"]
+    end
+
+    subgraph SOURCE["Source and collaboration"]
+        GITEA["Gitea<br/>Git history · Pull Requests · Issues"]
+    end
+
+    subgraph RENDERING["Rendering and publication"]
+        RENDERER["Rinspace Renderer<br/>Go API · PostgreSQL · durable jobs"]
+        ENGINES["Rendering engines<br/>Markdown · KaTeX · MathJax · Shiki<br/>LaTeXML · TeX SVG · Typst · PDF"]
+    end
+
+    subgraph DATA["Data and artifacts"]
+        DATABASE["CloudBase PostgreSQL<br/>Product state · publication index"]
+        STORAGE["CloudBase Storage<br/>Content-addressed public assets"]
+        SOCIAL["Inner-world data layer<br/>PostgreSQL · Redis · object storage"]
+    end
+
+    USER --> OUTER
+    USER --> INNER
+    OUTER --> EDITOR
+    OUTER <--> API
+    OUTER --> IDENTITY
+    INNER -->|OIDC| IDENTITY
+    EDITOR -->|Save and publish| API
+    API -->|Exact Git commit| GITEA
+    GITEA -->|Durable publication event| CONTROL
+    CONTROL -->|Source identity and job| RENDERER
+    RENDERER <--> ENGINES
+    RENDERER -->|Content-addressed assets| STORAGE
+    RENDERER -->|Signed completion event| CONTROL
+    CONTROL -->|Activate verified version| DATABASE
+    API <--> DATABASE
+    OUTER -->|Read public assets| STORAGE
+    CONTROL -->|Identity, profile, and Tag bindings| INNER
+    INNER <--> SOCIAL
+    INNER -->|Visible candidates and feedback| GORSE
+    GORSE -->|Ranking only| INNER
+```
+
+| Design principle | Implementation |
+| --- | --- |
+| Traceable source | Long-form content uses Git commits in Gitea as its authoritative source, retaining Pull Requests, Issues, and complete history. |
+| Immutable publication | A publication is bound to an exact commit and artifact digest. A failed candidate leaves the previous successful version active. |
+| Separation of responsibilities | Product services own business and identity concerns, the Control Plane orchestrates work, and the Renderer produces results through isolated engines. |
+| Two worlds, one identity | The outer world presents knowledge, while the inner world hosts the local community; stable subjects and OIDC connect them. |
+| Explicit sources of truth | Gitea owns long-form source, Mastodon owns social relationships and posts, and Gorse ranks candidates without owning them. |
+
 ## Technical Direction
 
 Rinspace treats a Tag as a knowledge node with a stable identity, context, and lifecycle. Git stores long-form sources and their history, and each publication is bound to an exact commit. The Control Plane verifies source and task identity, the Renderer produces an immutable result, and the Web serves the verified publication.
