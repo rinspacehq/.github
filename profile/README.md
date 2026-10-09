@@ -12,7 +12,7 @@ Rinspace 是一个以 Tag 为核心的长文、知识与社区空间。我们希
 | --- | --- | --- | --- |
 | [`rinspace-web`](https://github.com/rinspacehq/rinspace-web) | 官网表世界前端：阅读、写作、Tag、资料与社区界面 | 官网固定消费 [`v0.2.2`](https://github.com/rinspacehq/rinspace-web/releases/tag/v0.2.2)；该发行在 GitHub 上仍标记为预发行 | AGPL-3.0-only |
 | [`rinspace-renderer`](https://github.com/rinspacehq/rinspace-renderer) | Markdown、LaTeX、Typst、图表及 PDF 渲染协议与运行时 | [`v0.1.0-rc.2`](https://github.com/rinspacehq/rinspace-renderer/releases/tag/v0.1.0-rc.2) 已由 Rinspace 按精确 OCI digest 消费；仍处于 RC 阶段 | AGPL-3.0-only |
-| [`markdown-writer`](https://github.com/rinspacehq/markdown-writer) | Rinspace 实际使用的 Milkdown 写作页和增强插件 | 稳定发行 [`v0.3.3`](https://github.com/rinspacehq/markdown-writer/releases/tag/v0.3.3) | MIT |
+| [`rinspace-editor-markdown`](https://github.com/rinspacehq/rinspace-editor-markdown) | Rinspace 实际使用的 Milkdown 写作页和增强插件 | 稳定发行 [`v0.3.4`](https://github.com/rinspacehq/rinspace-editor-markdown/releases/tag/v0.3.4) | MIT |
 | [`mastodon`](https://github.com/rinspacehq/mastodon) | Rinspace 里世界使用的 Mastodon fork | 跟踪上游并承载 Rinspace 的本地社区集成 | AGPL-3.0 |
 
 Rinspace 的产品后端、Control Plane、生产集成和部署配置目前仍在私有产品仓库中。
@@ -46,7 +46,7 @@ Plane 合同接入。
 2. **改进长文阅读。** 更忠实地展示 Renderer 产出的结构、数学、参考文献和 SVG；
    对 LaTeXML 无法可靠转换的内容直接提供原 PDF 阅读。
 3. **完善创作体验。** 继续统一 Markdown、LaTeX 与 Typst 的创建、编辑、预览、
-   发布和诊断体验；优先修复 Markdown 编辑器的代码复制粘贴问题，并让可独立
+   发布和诊断体验；持续完善 Markdown 编辑器的代码块复制粘贴兼容性，并让可独立
    复用的编辑组件留在公开仓库。
 4. **建设表里世界。** 表世界专注书籍、文章、Tag 和知识关系；里世界基于
    Mastodon 提供本地社交能力。共享身份和关注关系需要保持一致，联邦能力不作为
@@ -71,9 +71,10 @@ Plane 合同接入。
   结果；对版式和绘图保真有要求时应提供固定的原 Typst PDF。
 - **PDF 与 Typst 编译器是可选的受限工作负载。** Renderer 的默认本地 Compose
   不会自动启动这些镜像；部署方需要显式配置受限 broker、资源上限和固定 digest。
-- **Markdown 编辑器的代码复制粘贴仍有 bug。** 在代码内容与代码块之间执行复制、
-  剪切或粘贴时，结构或格式可能不符合预期。这个问题尚未宣称修复；报告时请附上
-  最小输入、复制方向、浏览器和实际结果，且不要粘贴私有源码。
+- **Markdown 编辑器的代码粘贴修复仍需更多浏览器覆盖。** `v0.3.4` 已把来自
+  VS Code 的源码粘贴为代码块，并覆盖了首行 `#` 不被 H1 规则吞掉的回归；其他编辑器、
+  复制方向和复杂代码块组合仍可能存在兼容差异。报告时请附上最小输入、来源编辑器、
+  浏览器和实际结果，且不要粘贴私有源码。
 - **第三方许可需要逐项阅读。** 各仓库保留第三方 notice；Renderer 镜像 SBOM 中
   仍有包的许可证字段为 `NOASSERTION`，这不表示这些依赖没有许可证要求。
 - **公开 issue 数量不代表完成度。** 当前路线中的限制有些尚未拆成 GitHub issue。
@@ -89,6 +90,11 @@ Rinspace 会明确保留并说明已经采纳的贡献，而不是只在这里�
   [`rinspace-web` PR #25](https://github.com/rinspacehq/rinspace-web/pull/25)：
   改进个人资料页布局与深色模式简介展示，增加不额外请求 favicon 的个人网站链接，
   并补充相应测试。这些改动已经合入公开源码、进入 `v0.2.2`，并由官网固定消费。
+- 同样感谢 [`@xjn2005`](https://github.com/xjn2005) 的
+  [`rinspace-editor-markdown` PR #13](https://github.com/rinspacehq/rinspace-editor-markdown/pull/13)：
+  我们采纳了 VS Code 源码粘贴为代码块、演示图片 URL 修复和依赖更新，并在
+  `v0.3.4` 中发布。关于收紧 KaTeX 信任默认值的部分没有进入产品；Rinspace 的受信
+  创作环境继续保留 KaTeX 扩展能力。
 
 我们也感谢所有提交代码、测试、翻译、问题复现和设计反馈的人。新的贡献一旦被
 采纳，我们会在相应 PR、发行说明或本节中说明实际进入了什么，而不会把“收到建议”
@@ -112,7 +118,7 @@ Rinspace 建立在许多长期维护的自由软件之上。特别感谢
 
 - UI、样式、翻译和浏览器行为：[`rinspace-web/issues`](https://github.com/rinspacehq/rinspace-web/issues)
 - 渲染协议、引擎和本地部署：[`rinspace-renderer/issues`](https://github.com/rinspacehq/rinspace-renderer/issues)
-- Markdown 写作页和编辑器行为：[`markdown-writer/issues`](https://github.com/rinspacehq/markdown-writer/issues)
+- Markdown 写作页和编辑器行为：[`rinspace-editor-markdown/issues`](https://github.com/rinspacehq/rinspace-editor-markdown/issues)
 - 跨仓规划和 Rinspace 特有的 Mastodon 集成：[`rinspacehq/.github/issues`](https://github.com/rinspacehq/.github/issues)
 - Mastodon 上游问题请优先向 [`mastodon/mastodon`](https://github.com/mastodon/mastodon) 报告。
 
