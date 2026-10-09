@@ -10,7 +10,7 @@ Rinspace 是一个以 Tag 为核心的长文、知识与社区空间。我们希
 
 | 仓库 | 职责 | 当前状态 | 许可 |
 | --- | --- | --- | --- |
-| [`rinspace-web`](https://github.com/rinspacehq/rinspace-web) | 官网表世界前端：阅读、写作、Tag、资料与社区界面 | 官网固定消费 [`v0.2.2`](https://github.com/rinspacehq/rinspace-web/releases/tag/v0.2.2)；该发行在 GitHub 上仍标记为预发行 | AGPL-3.0-only |
+| [`rinspace-web`](https://github.com/rinspacehq/rinspace-web) | 官网表世界前端：阅读、写作、Tag、资料与社区界面 | 官网固定消费 [`v0.2.3`](https://github.com/rinspacehq/rinspace-web/releases/tag/v0.2.3)；该发行在 GitHub 上仍标记为预发行 | AGPL-3.0-only |
 | [`rinspace-renderer`](https://github.com/rinspacehq/rinspace-renderer) | Markdown、LaTeX、Typst、图表及 PDF 渲染协议与运行时 | [`v0.1.0-rc.2`](https://github.com/rinspacehq/rinspace-renderer/releases/tag/v0.1.0-rc.2) 已由 Rinspace 按精确 OCI digest 消费；仍处于 RC 阶段 | AGPL-3.0-only |
 | [`rinspace-editor-markdown`](https://github.com/rinspacehq/rinspace-editor-markdown) | Rinspace 实际使用的 Milkdown 写作页和增强插件 | 稳定发行 [`v0.3.4`](https://github.com/rinspacehq/rinspace-editor-markdown/releases/tag/v0.3.4) | MIT |
 | [`mastodon`](https://github.com/rinspacehq/mastodon) | Rinspace 里世界使用的 Mastodon fork | 跟踪上游并承载 Rinspace 的本地社区集成 | AGPL-3.0 |
@@ -89,7 +89,8 @@ Rinspace 会明确保留并说明已经采纳的贡献，而不是只在这里�
 - 感谢 [`@xjn2005`](https://github.com/xjn2005) 的
   [`rinspace-web` PR #25](https://github.com/rinspacehq/rinspace-web/pull/25)：
   改进个人资料页布局与深色模式简介展示，增加不额外请求 favicon 的个人网站链接，
-  并补充相应测试。这些改动已经合入公开源码、进入 `v0.2.2`，并由官网固定消费。
+  并补充相应测试。这些改动自 `v0.2.2` 起进入公开源码，并继续由官网当前的
+  `v0.2.3` 固定消费。
 - 同样感谢 [`@xjn2005`](https://github.com/xjn2005) 的
   [`rinspace-editor-markdown` PR #13](https://github.com/rinspacehq/rinspace-editor-markdown/pull/13)：
   我们采纳了 VS Code 源码粘贴为代码块、演示图片 URL 修复和依赖更新，并在
@@ -128,4 +129,4 @@ Rinspace 建立在许多长期维护的自由软件之上。特别感谢
 
 ---
 
-状态更新：2026-10-09。项目仍在快速演进；发行说明和各仓库 README 比本页更具体。
+状态更新：2026-10-10。项目仍在快速演进；发行说明和各仓库 README 比本页更具体。
