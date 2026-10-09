@@ -128,7 +128,21 @@ Please use the private vulnerability reporting channel provided by the relevant 
 
 ## Acknowledgements
 
-Rinspace is built on free software maintained by communities around the world. We thank the maintainers and contributors of [`Mastodon`](https://github.com/mastodon/mastodon), [`Gitea`](https://github.com/go-gitea/gitea), [`Milkdown`](https://github.com/Milkdown/milkdown), [`Typst`](https://github.com/typst/typst), [`LaTeXML`](https://github.com/brucemiller/LaTeXML), [`CodeMirror`](https://github.com/codemirror), and [`KaTeX`](https://github.com/KaTeX/KaTeX).
+Rinspace is supported by many open-source projects. We thank their maintainers and contributors.
+
+| Area | Open-source projects | Role in Rinspace |
+| --- | --- | --- |
+| Community and collaboration | [`Git`](https://git-scm.com/) · [`Gitea`](https://github.com/go-gitea/gitea) · [`Mastodon`](https://github.com/mastodon/mastodon) · [`Gorse`](https://github.com/gorse-io/gorse) | Source history, content collaboration, the inner-world community, and recommendation ranking |
+| Web foundations | [`React`](https://github.com/facebook/react) · [`React Router`](https://github.com/remix-run/react-router) · [`TypeScript`](https://github.com/microsoft/TypeScript) · [`Vite`](https://github.com/vitejs/vite) · [`Tailwind CSS`](https://github.com/tailwindlabs/tailwindcss) · [`i18next`](https://github.com/i18next/i18next) · [`SWR`](https://github.com/vercel/swr) · [`Zustand`](https://github.com/pmndrs/zustand) | Outer-world UI, routing, styling, internationalization, and client state |
+| Interface and interaction | [`Radix Primitives`](https://github.com/radix-ui/primitives) · [`Motion`](https://github.com/motiondivision/motion) · [`Lucide`](https://github.com/lucide-icons/lucide) · [`Bootstrap Icons`](https://github.com/twbs/icons) · [`Phosphor Icons`](https://github.com/phosphor-icons/core) | Accessible components, motion, and icon systems |
+| Authoring and editing | [`Milkdown`](https://github.com/Milkdown/milkdown) / Crepe · [`ProseMirror`](https://github.com/ProseMirror/prosemirror) · [`CodeMirror`](https://github.com/codemirror/dev) | Markdown authoring, rich document structure, and code editing |
+| Content and rendering | [`unified`](https://github.com/unifiedjs/unified) · [`remark`](https://github.com/remarkjs/remark) · [`rehype`](https://github.com/rehypejs/rehype) · [`KaTeX`](https://github.com/KaTeX/KaTeX) · [`MathJax`](https://github.com/mathjax/MathJax-src) · [`Shiki`](https://github.com/shikijs/shiki) | Markdown syntax trees, mathematical typesetting, and syntax highlighting |
+| Typesetting and documents | [`Typst`](https://github.com/typst/typst) · [`LaTeXML`](https://github.com/brucemiller/LaTeXML) · [`TeX Live`](https://tug.org/texlive/) · [`dvisvgm`](https://github.com/mgieseki/dvisvgm) · [`PDF.js`](https://github.com/mozilla/pdf.js) | Document compilation, LaTeX conversion, SVG generation, and PDF support |
+| Services and data | [`Go`](https://github.com/golang/go) · [`Gin`](https://github.com/gin-gonic/gin) · [`Node.js`](https://github.com/nodejs/node) · [`Ruby on Rails`](https://github.com/rails/rails) · [`Sidekiq`](https://github.com/sidekiq/sidekiq) · [`PostgreSQL`](https://github.com/postgres/postgres) · [`Redis`](https://github.com/redis/redis) · [`CloudBase JavaScript SDK`](https://github.com/TencentCloudBase/cloudbase-js-sdk) | Product services, rendering jobs, the community runtime, persistence, and session infrastructure |
+| Engineering quality and documentation | [`Playwright`](https://github.com/microsoft/playwright) · [`Vitest`](https://github.com/vitest-dev/vitest) · [`Testing Library`](https://github.com/testing-library) · [`axe-core`](https://github.com/dequelabs/axe-core) · [`Mermaid`](https://github.com/mermaid-js/mermaid) | Browser validation, unit testing, accessibility checks, and technical diagrams |
+| Typefaces | [`Noto Sans SC`](https://github.com/google/fonts/tree/main/ofl/notosanssc) · [`IBM Plex`](https://github.com/IBM/plex) · [`Newsreader`](https://github.com/productiontype/Newsreader) · [`Fira Code`](https://github.com/tonsky/FiraCode) · [`JetBrains Mono`](https://github.com/JetBrains/JetBrainsMono) · [`WenQuanYi Zen Hei`](https://sourceforge.net/projects/wqy/files/wqy-zenhei/) | Chinese text, interface, code, and document typography |
+
+This table covers the principal upstream projects in the product architecture. Each repository's third-party notices, lockfiles, and release SBOMs record exact versions and the complete dependency set.
 
 ---
 
