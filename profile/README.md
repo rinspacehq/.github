@@ -5,17 +5,22 @@
 芥子环是一个以 Tag 为核心的长文、知识与社区平台。我们以可追溯的源码和修订记录组织文章与书籍，并为 Markdown、LaTeX 和 Typst 提供创作、渲染与阅读能力。
 
 - **官方网站：** [rinspace.com](https://rinspace.com)
+- **芥子环在线编辑器：** [rinspace.com/editor/](https://rinspace.com/editor/)
 - **开源项目：** [github.com/rinspacehq](https://github.com/rinspacehq)
 
 ## 项目
 
-| 仓库 | 职责 | 当前版本 | 许可证 |
+| 仓库 | 职责 | 公开发行 / 阶段 | 许可证 |
 | --- | --- | --- | --- |
-| [`rinspace-web`](https://github.com/rinspacehq/rinspace-web) | 芥子环 Web 前端，覆盖阅读、创作、Tag、个人资料与社区界面 | [`v0.2.3`](https://github.com/rinspacehq/rinspace-web/releases/tag/v0.2.3) | AGPL-3.0-only |
+| [`rinspace-web`](https://github.com/rinspacehq/rinspace-web) | 芥子环 Web 前端，覆盖阅读、创作、Tag、个人资料与社区界面 | [`v0.2.5`](https://github.com/rinspacehq/rinspace-web/releases/tag/v0.2.5)（预发行） | AGPL-3.0-only |
 | [`rinspace-renderer`](https://github.com/rinspacehq/rinspace-renderer) | Markdown、LaTeX、Typst、图表与 PDF 的渲染协议及运行时 | [`v0.1.0-rc.2`](https://github.com/rinspacehq/rinspace-renderer/releases/tag/v0.1.0-rc.2) | AGPL-3.0-only |
-| [`rinspace-editor-markdown`](https://github.com/rinspacehq/rinspace-editor-markdown) | 基于 Milkdown 和 Crepe 的 Markdown 编辑器 | [`v0.3.4`](https://github.com/rinspacehq/rinspace-editor-markdown/releases/tag/v0.3.4) | MIT |
-| [`gitea`](https://github.com/rinspacehq/gitea) | 芥子环使用的 Gitea fork，承载内容源码与协作流程 | [`v1.27.2-rinspace.1`](https://github.com/rinspacehq/gitea/releases/tag/v1.27.2-rinspace.1) | MIT |
+| [`rinspace-editor-markdown`](https://github.com/rinspacehq/rinspace-editor-markdown) | 基于 Milkdown 和 Crepe 的 Markdown 编辑器 | [`v0.3.5`](https://github.com/rinspacehq/rinspace-editor-markdown/releases/tag/v0.3.5) | MIT |
+| [`texlyre`](https://github.com/rinspacehq/texlyre) | 芥子环在线编辑器：基于 TeXlyre 的本地优先 LaTeX / Typst 工作区，集成账号项目与 Git | [`v0.13.2-rinspace.9`](https://github.com/rinspacehq/texlyre/releases/tag/v0.13.2-rinspace.9) | AGPL-3.0-or-later |
+| [`rinspace-tags`](https://github.com/rinspacehq/rinspace-tags) | 知识关系与治理内核，提供稳定 Tag 身份、分类图与生命周期规划 | [`v0.2.0-rc.1`](https://github.com/rinspacehq/rinspace-tags/releases/tag/v0.2.0-rc.1)（候选） | AGPL-3.0-only |
+| [`gitea`](https://github.com/rinspacehq/gitea) | 芥子环使用的 Gitea fork，承载内容源码、项目目录与协作流程 | [`v1.27.2-rinspace.2`](https://github.com/rinspacehq/gitea/releases/tag/v1.27.2-rinspace.2) | MIT |
 | [`mastodon`](https://github.com/rinspacehq/mastodon) | 芥子环里世界使用的 Mastodon fork | [`rinspace-2026.09.26.2`](https://github.com/rinspacehq/mastodon/releases/tag/rinspace-2026.09.26.2) | AGPL-3.0 |
+
+发行版本不等于官网自动升级。截至 2026-10-17，已核对的官网采用版本为 Web `v0.2.5`、在线编辑器 `v0.13.2-rinspace.9`、Gitea `v1.27.2-rinspace.2`、Renderer `v0.1.0-rc.2`；Markdown 模块仍固定使用 `v0.3.4`，尚未采用已公开的 `v0.3.5`。
 
 ## 架构概览
 
@@ -26,12 +31,13 @@ flowchart TB
     subgraph EXPERIENCE["双世界体验与创作"]
         OUTER["表世界 Web<br/>React · TypeScript · Vite"]
         EDITOR["Markdown 编辑器<br/>Milkdown · Crepe · CodeMirror"]
+        WORKSPACE["在线编辑器<br/>TeXlyre · LaTeX · Typst"]
         INNER["里世界社区<br/>Mastodon · Rails · React"]
     end
 
     subgraph PRODUCT["产品服务"]
         API["业务 API / Runtime<br/>Go · Gin"]
-        IDENTITY["统一身份<br/>CloudBase Auth · OIDC"]
+        IDENTITY["统一身份<br/>Native Session · OIDC"]
         CONTROL["Control Plane<br/>发布 · 绑定 · 对账"]
         GORSE["Gorse<br/>推荐排序"]
     end
@@ -54,10 +60,13 @@ flowchart TB
     USER --> OUTER
     USER --> INNER
     OUTER --> EDITOR
+    OUTER --> WORKSPACE
     OUTER <--> API
     OUTER --> IDENTITY
     INNER -->|OIDC| IDENTITY
     EDITOR -->|保存与发布| API
+    WORKSPACE -->|会话与项目目录| API
+    WORKSPACE -->|Git Pull / Push| GITEA
     API -->|精确 Git 提交| GITEA
     GITEA -->|持久发布事件| CONTROL
     CONTROL -->|源码身份与任务| RENDERER
@@ -85,7 +94,7 @@ flowchart TB
 
 芥子环将 Tag 视为具有稳定身份、上下文和生命周期的知识节点。长文源码与历史由 Git 保存，发布过程绑定精确提交；Control Plane 验证源码和任务身份，Renderer 生成不可变结果，验证通过后再由 Web 提供阅读。
 
-公开组件以固定版本和完整性摘要进入芥子环产品。Renderer 同时支持独立本地运行和 Control Plane 集成，使公开实现与产品使用保持同一条版本链路。
+公开组件以固定版本和完整性摘要进入芥子环产品。Renderer 同时支持独立本地运行和 Control Plane 集成，使公开实现与产品使用保持同一条版本链路。在线编辑器保留本地工作区，并通过真实 Git 操作连接账号项目；`rinspace-tags` 提供共享关系与生命周期内核，产品适配层负责权限、存储和外部服务。
 
 当前工作集中在以下方向：
 
@@ -102,7 +111,11 @@ flowchart TB
 | LaTeX | 以 LaTeXML 生成结构化 HTML；无法可靠转换的文档提供原 PDF 直接阅读。 |
 | Typst | 支持 HTML 与 PDF 渲染。HTML 能力受官方 `typst2html` 限制，复杂绘图以 PDF 结果为准。 |
 | Markdown | 编辑器 `v0.3.4` 已支持将 VS Code 源码粘贴为代码块，并修复首行 `#` 被识别为标题的问题；其他来源的粘贴兼容性仍在持续完善。 |
-| 自托管 | Renderer 和 Markdown 编辑器可以独立使用；完整站点所需的后端、Control Plane 与生产部署系统尚未全部公开。 |
+| 在线编辑器 | [直接打开](https://rinspace.com/editor/)。提供本地工作区；账号项目支持打开、编辑、Commit、Pull 和 Push。本地模式不加载账号项目，账号目录默认不显示共享标签仓库，但可全局搜索。写入遵守实际仓库权限。 |
+| 编辑器近期修复 | 已修复 Push 后重开项目误要求 Pull，以及回首页重开后切文件标签退回首页的问题；账号头像昵称统一为一个菜单入口。默认语言跟随主站 / 浏览器，保留已有编辑器语言选择，可选 System 恢复自动。 |
+| Markdown 新发行 | 公开 `v0.3.5` 增加剪贴板 GFM 表格空行修复，并保留合法表格、普通文本和代码块；这是模块发行，不表示官网已升级。 |
+| Tags 内核 | 候选版包含分类图、别名、稳定身份与确定性的合并 / 弃用 / 归档 / 恢复规划；不等于完整的独立 Tags HTTP 服务或 TypeScript SDK。 |
+| 自托管 | Renderer、Markdown 编辑器和 TeXlyre 本地模式可以独立使用；完整站点及在线编辑器的 Rinspace 账号集成仍依赖尚未全部公开的后端、Control Plane 与部署系统。 |
 
 ## 社区贡献
 
@@ -110,7 +123,7 @@ flowchart TB
 
 | 日期 | 贡献者 | 项目 | 已采纳内容 | 进入版本 |
 | --- | --- | --- | --- | --- |
-| 2026-10-03 | [`@xjn2005`](https://github.com/xjn2005) | [`rinspace-web` #25](https://github.com/rinspacehq/rinspace-web/pull/25) | 改进个人资料页布局和深色模式简介展示；增加个人网站链接；补充相应测试 | `v0.2.2`，延续至 `v0.2.3` |
+| 2026-10-03 | [`@xjn2005`](https://github.com/xjn2005) | [`rinspace-web` #25](https://github.com/rinspacehq/rinspace-web/pull/25) | 改进个人资料页布局和深色模式简介展示；增加个人网站链接；补充相应测试 | 自 `v0.2.2` 起 |
 | 2026-10-09 | [`@xjn2005`](https://github.com/xjn2005) | [`rinspace-editor-markdown` #13](https://github.com/rinspacehq/rinspace-editor-markdown/pull/13) | 支持 VS Code 源码粘贴为代码块；修复演示图片地址；更新依赖 | `v0.3.4` |
 
 感谢所有提交代码、测试、问题复现、翻译和设计反馈的贡献者。各项目的发行说明会继续记录贡献实际进入的版本与范围。
@@ -122,6 +135,8 @@ flowchart TB
 | Web 界面与浏览器行为 | [`rinspace-web/issues`](https://github.com/rinspacehq/rinspace-web/issues) |
 | 渲染协议、引擎与部署 | [`rinspace-renderer/issues`](https://github.com/rinspacehq/rinspace-renderer/issues) |
 | Markdown 编辑器 | [`rinspace-editor-markdown/issues`](https://github.com/rinspacehq/rinspace-editor-markdown/issues) |
+| 在线编辑器、本地工作区与 Git 项目 | [`texlyre/issues`](https://github.com/rinspacehq/texlyre/issues) |
+| Tag 关系模型与治理内核 | [`rinspace-tags/issues`](https://github.com/rinspacehq/rinspace-tags/issues) |
 | 跨项目规划 | [`.github/issues`](https://github.com/rinspacehq/.github/issues) |
 
 安全问题请使用对应仓库提供的私密漏洞报告渠道。
@@ -134,8 +149,8 @@ flowchart TB
 | --- | --- | --- |
 | 社区与协作 | [`Git`](https://git-scm.com/) · [`Gitea`](https://github.com/go-gitea/gitea) · [`Mastodon`](https://github.com/mastodon/mastodon) · [`Gorse`](https://github.com/gorse-io/gorse) | 源码历史、内容协作、里世界社区和推荐排序 |
 | Web 基础 | [`React`](https://github.com/facebook/react) · [`React Router`](https://github.com/remix-run/react-router) · [`TypeScript`](https://github.com/microsoft/TypeScript) · [`Vite`](https://github.com/vitejs/vite) · [`Tailwind CSS`](https://github.com/tailwindlabs/tailwindcss) · [`i18next`](https://github.com/i18next/i18next) · [`SWR`](https://github.com/vercel/swr) · [`Zustand`](https://github.com/pmndrs/zustand) | 表世界前端、路由、样式、国际化和客户端状态 |
-| 界面与交互 | [`Radix Primitives`](https://github.com/radix-ui/primitives) · [`Motion`](https://github.com/motiondivision/motion) · [`Lucide`](https://github.com/lucide-icons/lucide) · [`Bootstrap Icons`](https://github.com/twbs/icons) · [`Phosphor Icons`](https://github.com/phosphor-icons/core) | 可访问组件、动效和图标系统 |
-| 写作与编辑 | [`Milkdown`](https://github.com/Milkdown/milkdown) / Crepe · [`ProseMirror`](https://github.com/ProseMirror/prosemirror) · [`CodeMirror`](https://github.com/codemirror/dev) | Markdown 写作、富文本结构和代码编辑 |
+| 界面与交互 | [`Animate UI`](https://github.com/imskyleen/animate-ui) · [`Radix Primitives`](https://github.com/radix-ui/primitives) · [`Motion`](https://github.com/motiondivision/motion) · [`Lucide`](https://github.com/lucide-icons/lucide) · [`Bootstrap Icons`](https://github.com/twbs/icons) · [`Phosphor Icons`](https://github.com/phosphor-icons/core) | 可访问组件、动效和图标系统 |
+| 写作与编辑 | [`TeXlyre`](https://github.com/TeXlyre/texlyre) · [`Milkdown`](https://github.com/Milkdown/milkdown) / Crepe · [`ProseMirror`](https://github.com/ProseMirror/prosemirror) · [`CodeMirror`](https://github.com/codemirror/dev) · [`Yjs`](https://github.com/yjs/yjs) · [`isomorphic-git`](https://github.com/isomorphic-git/isomorphic-git) | 文档工作区、Markdown 写作、代码编辑、协作数据结构和浏览器 Git |
 | 内容与渲染 | [`unified`](https://github.com/unifiedjs/unified) · [`remark`](https://github.com/remarkjs/remark) · [`rehype`](https://github.com/rehypejs/rehype) · [`KaTeX`](https://github.com/KaTeX/KaTeX) · [`MathJax`](https://github.com/mathjax/MathJax-src) · [`Shiki`](https://github.com/shikijs/shiki) | Markdown 语法树、数学公式和代码高亮 |
 | 排版与文档 | [`Typst`](https://github.com/typst/typst) · [`LaTeXML`](https://github.com/brucemiller/LaTeXML) · [`TeX Live`](https://tug.org/texlive/) · [`dvisvgm`](https://github.com/mgieseki/dvisvgm) · [`PDF.js`](https://github.com/mozilla/pdf.js) | 文档编译、LaTeX 转换、SVG 生成和 PDF 能力 |
 | 服务与数据 | [`Go`](https://github.com/golang/go) · [`Gin`](https://github.com/gin-gonic/gin) · [`Node.js`](https://github.com/nodejs/node) · [`Ruby on Rails`](https://github.com/rails/rails) · [`Sidekiq`](https://github.com/sidekiq/sidekiq) · [`PostgreSQL`](https://github.com/postgres/postgres) · [`Redis`](https://github.com/redis/redis) · [`CloudBase JavaScript SDK`](https://github.com/TencentCloudBase/cloudbase-js-sdk) | 产品服务、渲染任务、社区运行时、持久化和会话基础设施 |
@@ -146,4 +161,4 @@ flowchart TB
 
 ---
 
-最后更新：2026-10-10
+最后更新：2026-10-17
