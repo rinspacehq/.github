@@ -2,163 +2,84 @@
 
 [简体中文](README.md) | [English](README_EN.md)
 
-芥子环是一个以 Tag 为核心的长文、知识与社区平台。我们以可追溯的源码和修订记录组织文章与书籍，并为 Markdown、LaTeX 和 Typst 提供创作、渲染与阅读能力。
+芥子环是一个以标签连接文章、书籍与社区的知识平台，支持 Markdown、LaTeX 和 Typst 创作，以 Git 保留内容源码与修订历史。
 
-- **官方网站：** [rinspace.com](https://rinspace.com)
-- **芥子环在线编辑器：** [rinspace.com/editor/](https://rinspace.com/editor/)
-- **开源项目：** [github.com/rinspacehq](https://github.com/rinspacehq)
+[官网](https://rinspace.com) · [在线编辑器](https://rinspace.com/editor/) · [PDF 阅读器](https://rinspace.com/reader) · [技术文档](https://rinspace.com/docs/)
 
-## 项目
+## 创作与阅读
 
-| 仓库 | 职责 | 公开发行 / 阶段 | 许可证 |
-| --- | --- | --- | --- |
-| [`rinspace-web`](https://github.com/rinspacehq/rinspace-web) | 芥子环 Web 前端，覆盖阅读、创作、Tag、个人资料与社区界面 | [`v0.2.5`](https://github.com/rinspacehq/rinspace-web/releases/tag/v0.2.5)（预发行） | AGPL-3.0-only |
-| [`rinspace-renderer`](https://github.com/rinspacehq/rinspace-renderer) | Markdown、LaTeX、Typst、图表与 PDF 的渲染协议及运行时 | [`v0.1.0-rc.2`](https://github.com/rinspacehq/rinspace-renderer/releases/tag/v0.1.0-rc.2) | AGPL-3.0-only |
-| [`rinspace-editor-markdown`](https://github.com/rinspacehq/rinspace-editor-markdown) | 基于 Milkdown 和 Crepe 的 Markdown 编辑器 | [`v0.3.5`](https://github.com/rinspacehq/rinspace-editor-markdown/releases/tag/v0.3.5) | MIT |
-| [`texlyre`](https://github.com/rinspacehq/texlyre) | 芥子环在线编辑器：基于 TeXlyre 的本地优先 LaTeX / Typst 工作区，集成账号项目与 Git | [`v0.13.2-rinspace.9`](https://github.com/rinspacehq/texlyre/releases/tag/v0.13.2-rinspace.9) | AGPL-3.0-or-later |
-| [`rinspace-tags`](https://github.com/rinspacehq/rinspace-tags) | 知识关系与治理内核，提供稳定 Tag 身份、分类图与生命周期规划 | [`v0.2.0-rc.1`](https://github.com/rinspacehq/rinspace-tags/releases/tag/v0.2.0-rc.1)（候选） | AGPL-3.0-only |
-| [`gitea`](https://github.com/rinspacehq/gitea) | 芥子环使用的 Gitea fork，承载内容源码、项目目录与协作流程 | [`v1.27.2-rinspace.2`](https://github.com/rinspacehq/gitea/releases/tag/v1.27.2-rinspace.2) | MIT |
-| [`mastodon`](https://github.com/rinspacehq/mastodon) | 芥子环里世界使用的 Mastodon fork | [`rinspace-2026.09.26.2`](https://github.com/rinspacehq/mastodon/releases/tag/rinspace-2026.09.26.2) | AGPL-3.0 |
+- **文章与书籍**：多格式写作、渲染与发布，呈现公式、代码、图表和参考文献。
+- **标签与社区**：通过标签关系组织知识，连接内容、作者与讨论。
+- **在线编辑器**：本地工作区、账号项目与 Git 协作，琳可辅助阅读和修改项目文件。
+- **PDF 阅读器**：打开本地 PDF，使用最近阅读与书架管理记录，保存阅读进度并续读。
+- **琳**：聊天、辅助写作与 PDF 问答；阅读时可识别当前页、解释选区，并通过页码引用返回原文。
 
-发行版本不等于官网自动升级。截至 2026-10-17，已核对的官网采用版本为 Web `v0.2.5`、在线编辑器 `v0.13.2-rinspace.9`、Gitea `v1.27.2-rinspace.2`、Renderer `v0.1.0-rc.2`；Markdown 模块仍固定使用 `v0.3.4`，尚未采用已公开的 `v0.3.5`。
+## 开源项目
 
-## 架构概览
+| 项目 | 内容 |
+| --- | --- |
+| [rinspace-web](https://github.com/rinspacehq/rinspace-web) | 主站前端、Reader 书架与浏览器集成 |
+| [rinspace-renderer](https://github.com/rinspacehq/rinspace-renderer) | Markdown、LaTeX、Typst 与图表渲染 |
+| [rinspace-editor-markdown](https://github.com/rinspacehq/rinspace-editor-markdown) | 基于 Milkdown / Crepe 的 Markdown 编辑器 |
+| [rinspace-tags](https://github.com/rinspacehq/rinspace-tags) | 标签关系、稳定身份与生命周期内核 |
+| [rinspace-rin](https://github.com/rinspacehq/rinspace-rin) | 琳的聊天核心与 Agent 模型调用协议 |
+| [rinspace-docs](https://github.com/rinspacehq/rinspace-docs) | 基于 Fumadocs 的技术文档站 |
+
+## 上游分支
+
+| 项目 | 内容 |
+| --- | --- |
+| [texlyre](https://github.com/rinspacehq/texlyre) | LaTeX / Typst 在线编辑器、本地工作区与账号项目 |
+| [embed-pdf-viewer](https://github.com/rinspacehq/embed-pdf-viewer) | EmbedPDF 阅读器与原生琳插件 |
+| [gitea](https://github.com/rinspacehq/gitea) | 内容源码、Git 历史与协作 |
+| [mastodon](https://github.com/rinspacehq/mastodon) | 里世界社区 |
+| [new-api](https://github.com/rinspacehq/new-api) | 模型网关与调用计量 |
+| [cline](https://github.com/rinspacehq/cline) | 编码 Agent 与工具调用集成 |
+
+## 架构
 
 ```mermaid
-flowchart TB
-    USER["读者与创作者"]
-
-    subgraph EXPERIENCE["双世界体验与创作"]
-        OUTER["表世界 Web<br/>React · TypeScript · Vite"]
-        EDITOR["Markdown 编辑器<br/>Milkdown · Crepe · CodeMirror"]
-        WORKSPACE["在线编辑器<br/>TeXlyre · LaTeX · Typst"]
-        INNER["里世界社区<br/>Mastodon · Rails · React"]
-    end
-
-    subgraph PRODUCT["产品服务"]
-        API["业务 API / Runtime<br/>Go · Gin"]
-        IDENTITY["统一身份<br/>Native Session · OIDC"]
-        CONTROL["Control Plane<br/>发布 · 绑定 · 对账"]
-        GORSE["Gorse<br/>推荐排序"]
-    end
-
-    subgraph SOURCE["源码与协作"]
-        GITEA["Gitea<br/>Git 历史 · Pull Request · Issue"]
-    end
-
-    subgraph RENDERING["渲染与发布"]
-        RENDERER["Rinspace Renderer<br/>Go API · PostgreSQL · Durable Jobs"]
-        ENGINES["渲染引擎<br/>Markdown · KaTeX · MathJax · Shiki<br/>LaTeXML · TeX SVG · Typst · PDF"]
-    end
-
-    subgraph DATA["数据与制品"]
-        DATABASE["CloudBase PostgreSQL<br/>产品状态 · 发布索引"]
-        STORAGE["CloudBase Storage<br/>内容寻址的公开资源"]
-        SOCIAL["里世界数据层<br/>PostgreSQL · Redis · 对象存储"]
-    end
-
-    USER --> OUTER
-    USER --> INNER
-    OUTER --> EDITOR
-    OUTER --> WORKSPACE
-    OUTER <--> API
-    OUTER --> IDENTITY
-    INNER -->|OIDC| IDENTITY
-    EDITOR -->|保存与发布| API
-    WORKSPACE -->|会话与项目目录| API
-    WORKSPACE -->|Git Pull / Push| GITEA
-    API -->|精确 Git 提交| GITEA
-    GITEA -->|持久发布事件| CONTROL
-    CONTROL -->|源码身份与任务| RENDERER
-    RENDERER <--> ENGINES
-    RENDERER -->|内容寻址资源| STORAGE
-    RENDERER -->|签名完成事件| CONTROL
-    CONTROL -->|激活验证版本| DATABASE
-    API <--> DATABASE
-    OUTER -->|读取公开资源| STORAGE
-    CONTROL -->|身份、资料与 Tag 绑定| INNER
-    INNER <--> SOCIAL
-    INNER -->|可见候选与反馈| GORSE
-    GORSE -->|仅排序| INNER
+flowchart LR
+    EDITOR["在线编辑器"] --> GIT["Git 源码与协作"]
+    GIT --> PUBLISH["发布服务"]
+    PUBLISH --> RENDER["文档渲染"]
+    RENDER --> WEB["文章与书籍"]
+    TAGS["标签关系"] --- WEB
+    LOCAL["本地 PDF"] --> READER["Reader"]
+    RIN["琳"] --- EDITOR
+    RIN --- READER
+    RIN --- WEB
 ```
 
-| 设计原则 | 实现方式 |
-| --- | --- |
-| 源码可追溯 | 长文以 Gitea 中的 Git 提交为权威源码，协作保留 Pull Request、Issue 和完整历史。 |
-| 发布不可变 | 发布绑定精确提交和制品摘要；新版本验证失败时继续提供上一成功版本。 |
-| 职责分离 | 产品服务负责业务与身份，Control Plane 负责编排，Renderer 通过独立引擎生成结果。 |
-| 两个世界、一个身份 | 表世界承载知识内容，里世界承载本地社区；二者以稳定主体和 OIDC 连接。 |
-| 明确事实来源 | Gitea 保存长文源码，Mastodon 保存社交关系与推文，Gorse 只对候选内容排序。 |
-
-## 技术方向
-
-芥子环将 Tag 视为具有稳定身份、上下文和生命周期的知识节点。长文源码与历史由 Git 保存，发布过程绑定精确提交；Control Plane 验证源码和任务身份，Renderer 生成不可变结果，验证通过后再由 Web 提供阅读。
-
-公开组件以固定版本和完整性摘要进入芥子环产品。Renderer 同时支持独立本地运行和 Control Plane 集成，使公开实现与产品使用保持同一条版本链路。在线编辑器保留本地工作区，并通过真实 Git 操作连接账号项目；`rinspace-tags` 提供共享关系与生命周期内核，产品适配层负责权限、存储和外部服务。
-
-当前工作集中在以下方向：
-
-- 完善 Tag、文章、书籍与社区关系组成的知识网络。
-- 提升 Markdown、LaTeX 和 Typst 从创作到发布的统一体验。
-- 忠实呈现数学公式、参考文献、图表、SVG 与长文结构。
-- 改进公开组件的可复现构建、稳定发行和独立部署能力。
-- 按清晰的模块边界逐步开放更多芥子环组件。
-
-## 当前能力与边界
-
-| 领域 | 当前状态 |
-| --- | --- |
-| LaTeX | 以 LaTeXML 生成结构化 HTML；无法可靠转换的文档提供原 PDF 直接阅读。 |
-| Typst | 支持 HTML 与 PDF 渲染。HTML 能力受官方 `typst2html` 限制，复杂绘图以 PDF 结果为准。 |
-| Markdown | 编辑器 `v0.3.4` 已支持将 VS Code 源码粘贴为代码块，并修复首行 `#` 被识别为标题的问题；其他来源的粘贴兼容性仍在持续完善。 |
-| 在线编辑器 | [直接打开](https://rinspace.com/editor/)。提供本地工作区；账号项目支持打开、编辑、Commit、Pull 和 Push。本地模式不加载账号项目，账号目录默认不显示共享标签仓库，但可全局搜索。写入遵守实际仓库权限。 |
-| 编辑器近期修复 | 已修复 Push 后重开项目误要求 Pull，以及回首页重开后切文件标签退回首页的问题；账号头像昵称统一为一个菜单入口。默认语言跟随主站 / 浏览器，保留已有编辑器语言选择，可选 System 恢复自动。 |
-| Markdown 新发行 | 公开 `v0.3.5` 增加剪贴板 GFM 表格空行修复，并保留合法表格、普通文本和代码块；这是模块发行，不表示官网已升级。 |
-| Tags 内核 | 候选版包含分类图、别名、稳定身份与确定性的合并 / 弃用 / 归档 / 恢复规划；不等于完整的独立 Tags HTTP 服务或 TypeScript SDK。 |
-| 自托管 | Renderer、Markdown 编辑器和 TeXlyre 本地模式可以独立使用；完整站点及在线编辑器的 Rinspace 账号集成仍依赖尚未全部公开的后端、Control Plane 与部署系统。 |
+源码和修订记录保存在 Git 中，发布绑定具体提交；Reader 的本地书架与进度保存在设备上。琳在主站、编辑器和阅读器中共用账号与善功计费。
 
 ## 社区贡献
 
-下表记录已经合入并进入发行版本的社区贡献。日期为贡献合入日期。
+| 贡献者 | 项目 | 已采纳内容 |
+| --- | --- | --- |
+| [@xjn2005](https://github.com/xjn2005) | [rinspace-web #25](https://github.com/rinspacehq/rinspace-web/pull/25) | 个人资料页布局、深色模式简介、个人网站链接与测试 |
+| [@xjn2005](https://github.com/xjn2005) | [rinspace-editor-markdown #13](https://github.com/rinspacehq/rinspace-editor-markdown/pull/13) | VS Code 源码粘贴为代码块、演示图片与依赖更新 |
 
-| 日期 | 贡献者 | 项目 | 已采纳内容 | 进入版本 |
-| --- | --- | --- | --- | --- |
-| 2026-10-03 | [`@xjn2005`](https://github.com/xjn2005) | [`rinspace-web` #25](https://github.com/rinspacehq/rinspace-web/pull/25) | 改进个人资料页布局和深色模式简介展示；增加个人网站链接；补充相应测试 | 自 `v0.2.2` 起 |
-| 2026-10-09 | [`@xjn2005`](https://github.com/xjn2005) | [`rinspace-editor-markdown` #13](https://github.com/rinspacehq/rinspace-editor-markdown/pull/13) | 支持 VS Code 源码粘贴为代码块；修复演示图片地址；更新依赖 | `v0.3.4` |
-
-感谢所有提交代码、测试、问题复现、翻译和设计反馈的贡献者。各项目的发行说明会继续记录贡献实际进入的版本与范围。
-
-## 参与项目
-
-| 方向 | 入口 |
-| --- | --- |
-| Web 界面与浏览器行为 | [`rinspace-web/issues`](https://github.com/rinspacehq/rinspace-web/issues) |
-| 渲染协议、引擎与部署 | [`rinspace-renderer/issues`](https://github.com/rinspacehq/rinspace-renderer/issues) |
-| Markdown 编辑器 | [`rinspace-editor-markdown/issues`](https://github.com/rinspacehq/rinspace-editor-markdown/issues) |
-| 在线编辑器、本地工作区与 Git 项目 | [`texlyre/issues`](https://github.com/rinspacehq/texlyre/issues) |
-| Tag 关系模型与治理内核 | [`rinspace-tags/issues`](https://github.com/rinspacehq/rinspace-tags/issues) |
-| 跨项目规划 | [`.github/issues`](https://github.com/rinspacehq/.github/issues) |
-
-安全问题请使用对应仓库提供的私密漏洞报告渠道。
+欢迎在各项目提交 Issue 和 Pull Request；跨项目建议可在[这里](https://github.com/rinspacehq/.github/issues)讨论。
 
 ## 致谢
 
-芥子环由许多开源项目共同支撑。我们感谢以下项目的维护者与贡献者。
+感谢这些开源项目的维护者与贡献者。
 
-| 领域 | 开源项目 | 在芥子环中的作用 |
-| --- | --- | --- |
-| 社区与协作 | [`Git`](https://git-scm.com/) · [`Gitea`](https://github.com/go-gitea/gitea) · [`Mastodon`](https://github.com/mastodon/mastodon) · [`Gorse`](https://github.com/gorse-io/gorse) | 源码历史、内容协作、里世界社区和推荐排序 |
-| Web 基础 | [`React`](https://github.com/facebook/react) · [`React Router`](https://github.com/remix-run/react-router) · [`TypeScript`](https://github.com/microsoft/TypeScript) · [`Vite`](https://github.com/vitejs/vite) · [`Tailwind CSS`](https://github.com/tailwindlabs/tailwindcss) · [`i18next`](https://github.com/i18next/i18next) · [`SWR`](https://github.com/vercel/swr) · [`Zustand`](https://github.com/pmndrs/zustand) | 表世界前端、路由、样式、国际化和客户端状态 |
-| 界面与交互 | [`Animate UI`](https://github.com/imskyleen/animate-ui) · [`Radix Primitives`](https://github.com/radix-ui/primitives) · [`Motion`](https://github.com/motiondivision/motion) · [`Lucide`](https://github.com/lucide-icons/lucide) · [`Bootstrap Icons`](https://github.com/twbs/icons) · [`Phosphor Icons`](https://github.com/phosphor-icons/core) | 可访问组件、动效和图标系统 |
-| 写作与编辑 | [`TeXlyre`](https://github.com/TeXlyre/texlyre) · [`Milkdown`](https://github.com/Milkdown/milkdown) / Crepe · [`ProseMirror`](https://github.com/ProseMirror/prosemirror) · [`CodeMirror`](https://github.com/codemirror/dev) · [`Yjs`](https://github.com/yjs/yjs) · [`isomorphic-git`](https://github.com/isomorphic-git/isomorphic-git) | 文档工作区、Markdown 写作、代码编辑、协作数据结构和浏览器 Git |
-| 内容与渲染 | [`unified`](https://github.com/unifiedjs/unified) · [`remark`](https://github.com/remarkjs/remark) · [`rehype`](https://github.com/rehypejs/rehype) · [`KaTeX`](https://github.com/KaTeX/KaTeX) · [`MathJax`](https://github.com/mathjax/MathJax-src) · [`Shiki`](https://github.com/shikijs/shiki) | Markdown 语法树、数学公式和代码高亮 |
-| 排版与文档 | [`Typst`](https://github.com/typst/typst) · [`LaTeXML`](https://github.com/brucemiller/LaTeXML) · [`TeX Live`](https://tug.org/texlive/) · [`dvisvgm`](https://github.com/mgieseki/dvisvgm) · [`PDF.js`](https://github.com/mozilla/pdf.js) | 文档编译、LaTeX 转换、SVG 生成和 PDF 能力 |
-| 服务与数据 | [`Go`](https://github.com/golang/go) · [`Gin`](https://github.com/gin-gonic/gin) · [`Node.js`](https://github.com/nodejs/node) · [`Ruby on Rails`](https://github.com/rails/rails) · [`Sidekiq`](https://github.com/sidekiq/sidekiq) · [`PostgreSQL`](https://github.com/postgres/postgres) · [`Redis`](https://github.com/redis/redis) · [`CloudBase JavaScript SDK`](https://github.com/TencentCloudBase/cloudbase-js-sdk) | 产品服务、渲染任务、社区运行时、持久化和会话基础设施 |
-| 工程质量与文档 | [`Playwright`](https://github.com/microsoft/playwright) · [`Vitest`](https://github.com/vitest-dev/vitest) · [`Testing Library`](https://github.com/testing-library) · [`axe-core`](https://github.com/dequelabs/axe-core) · [`Mermaid`](https://github.com/mermaid-js/mermaid) | 浏览器验证、单元测试、可访问性检查和技术图示 |
-| 字体 | [`Noto Sans SC`](https://github.com/google/fonts/tree/main/ofl/notosanssc) · [`IBM Plex`](https://github.com/IBM/plex) · [`Newsreader`](https://github.com/productiontype/Newsreader) · [`Fira Code`](https://github.com/tonsky/FiraCode) · [`JetBrains Mono`](https://github.com/JetBrains/JetBrainsMono) · [`WenQuanYi Zen Hei`](https://sourceforge.net/projects/wqy/files/wqy-zenhei/) | 中文正文、界面、代码和文档排版 |
-
-这里列出的是产品架构中的主要上游项目。各仓库的第三方声明、锁文件与发行 SBOM 记录具体版本和完整依赖。
+| 领域 | 开源项目 |
+| --- | --- |
+| 社区与协作 | [`Git`](https://git-scm.com/) · [`Gitea`](https://github.com/go-gitea/gitea) · [`Mastodon`](https://github.com/mastodon/mastodon) · [`Gorse`](https://github.com/gorse-io/gorse) |
+| Web 基础 | [`React`](https://github.com/facebook/react) · [`React Router`](https://github.com/remix-run/react-router) · [`TypeScript`](https://github.com/microsoft/TypeScript) · [`Vite`](https://github.com/vitejs/vite) · [`Tailwind CSS`](https://github.com/tailwindlabs/tailwindcss) · [`i18next`](https://github.com/i18next/i18next) · [`SWR`](https://github.com/vercel/swr) · [`Zustand`](https://github.com/pmndrs/zustand) |
+| 界面与交互 | [`Animate UI`](https://github.com/imskyleen/animate-ui) · [`Radix Primitives`](https://github.com/radix-ui/primitives) · [`Motion`](https://github.com/motiondivision/motion) · [`Lucide`](https://github.com/lucide-icons/lucide) · [`Bootstrap Icons`](https://github.com/twbs/icons) · [`Phosphor Icons`](https://github.com/phosphor-icons/core) |
+| 写作与编辑 | [`TeXlyre`](https://github.com/TeXlyre/texlyre) · [`Milkdown`](https://github.com/Milkdown/milkdown) / Crepe · [`ProseMirror`](https://github.com/ProseMirror/prosemirror) · [`CodeMirror`](https://github.com/codemirror/dev) · [`Yjs`](https://github.com/yjs/yjs) · [`isomorphic-git`](https://github.com/isomorphic-git/isomorphic-git) |
+| 内容与渲染 | [`unified`](https://github.com/unifiedjs/unified) · [`remark`](https://github.com/remarkjs/remark) · [`rehype`](https://github.com/rehypejs/rehype) · [`KaTeX`](https://github.com/KaTeX/KaTeX) · [`MathJax`](https://github.com/mathjax/MathJax-src) · [`Shiki`](https://github.com/shikijs/shiki) |
+| 排版与文档 | [`Typst`](https://github.com/typst/typst) · [`LaTeXML`](https://github.com/brucemiller/LaTeXML) · [`TeX Live`](https://tug.org/texlive/) · [`dvisvgm`](https://github.com/mgieseki/dvisvgm) · [`PDF.js`](https://github.com/mozilla/pdf.js) |
+| 服务与数据 | [`Go`](https://github.com/golang/go) · [`Gin`](https://github.com/gin-gonic/gin) · [`Node.js`](https://github.com/nodejs/node) · [`Ruby on Rails`](https://github.com/rails/rails) · [`Sidekiq`](https://github.com/sidekiq/sidekiq) · [`PostgreSQL`](https://github.com/postgres/postgres) · [`Redis`](https://github.com/redis/redis) · [`CloudBase JavaScript SDK`](https://github.com/TencentCloudBase/cloudbase-js-sdk) |
+| 工程质量与文档 | [`Playwright`](https://github.com/microsoft/playwright) · [`Vitest`](https://github.com/vitest-dev/vitest) · [`Testing Library`](https://github.com/testing-library) · [`axe-core`](https://github.com/dequelabs/axe-core) · [`Mermaid`](https://github.com/mermaid-js/mermaid) · [`Fumadocs`](https://github.com/fuma-nama/fumadocs) |
+| 字体 | [`Noto Sans SC`](https://github.com/google/fonts/tree/main/ofl/notosanssc) · [`IBM Plex`](https://github.com/IBM/plex) · [`Newsreader`](https://github.com/productiontype/Newsreader) · [`Fira Code`](https://github.com/tonsky/FiraCode) · [`JetBrains Mono`](https://github.com/JetBrains/JetBrainsMono) · [`WenQuanYi Zen Hei`](https://sourceforge.net/projects/wqy/files/wqy-zenhei/) |
+| PDF 阅读 | [EmbedPDF](https://github.com/embedpdf/embed-pdf-viewer) · [PDFium](https://pdfium.googlesource.com/pdfium/) |
+| AI 与 Agent | [Cline](https://github.com/cline/cline) · [New API](https://github.com/QuantumNous/new-api) |
 
 ---
 
-最后更新：2026-10-17
+最后更新：2026-11-01
