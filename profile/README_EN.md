@@ -39,19 +39,104 @@ Rinspace connects articles, books, and communities through tags. It supports Mar
 ## Architecture
 
 ```mermaid
-flowchart LR
-    EDITOR["Online editor"] --> GIT["Git source and collaboration"]
-    GIT --> PUBLISH["Publication service"]
-    PUBLISH --> RENDER["Document rendering"]
-    RENDER --> WEB["Articles and books"]
-    TAGS["Tag relationships"] --- WEB
-    LOCAL["Local PDF"] --> READER["Reader"]
-    RIN["Rin"] --- EDITOR
-    RIN --- READER
-    RIN --- WEB
+flowchart TB
+    USER["Readers and authors"]
+
+    subgraph EXPERIENCE["Two-world experience and authoring"]
+        OUTER["Outer-world Web<br/>React · TypeScript · Vite"]
+        EDITOR["Markdown editor<br/>Milkdown · Crepe · CodeMirror"]
+        WORKSPACE["Online Editor<br/>TeXlyre · LaTeX · Typst"]
+        READER["Reader bookshelf<br/>Recent reading · Search · Resume"]
+        PDF["PDF reading interface<br/>EmbedPDF · PDFium"]
+        RINCLIENT["Rin chat and Agent<br/>Browser interaction · Project / PDF tools"]
+        DOCS["Technical documentation<br/>Fumadocs"]
+        INNER["Inner-world community<br/>Mastodon · Rails · React"]
+    end
+
+    subgraph PRODUCT["Product services"]
+        API["Business API / Runtime<br/>Go · Gin"]
+        IDENTITY["Unified identity<br/>Native Session · OIDC"]
+        CONTROL["Control Plane<br/>Publication · bindings · reconciliation"]
+        WALLET["Shangong ledger<br/>Rates · Reservations · Usage settlement"]
+        GORSE["Gorse<br/>Recommendation ranking"]
+    end
+
+    subgraph SOURCE["Source and collaboration"]
+        GITEA["Gitea<br/>Git history · Pull Requests · Issues"]
+    end
+
+    subgraph RENDERING["Rendering and publication"]
+        RENDERER["Rinspace Renderer<br/>Go API · PostgreSQL · durable jobs"]
+        ENGINES["Rendering engines<br/>Markdown · KaTeX · MathJax · Shiki<br/>LaTeXML · TeX SVG · Typst · PDF"]
+    end
+
+    subgraph DATA["Data and artifacts"]
+        DATABASE["PostgreSQL<br/>Product state · Publication index · Ledger"]
+        STORAGE["CloudBase Storage<br/>Content-addressed public assets"]
+        SOCIAL["Inner-world data layer<br/>PostgreSQL · Redis · object storage"]
+    end
+
+    subgraph AI["Rin and model services"]
+        RINSERVICE["Rin service<br/>Chat core · Agent model calls"]
+        GATEWAY["New API<br/>Model gateway · Usage receipts"]
+        MODELS["Model providers"]
+    end
+
+    subgraph LOCAL["On-device data"]
+        LOCALPDF["Local PDF files"]
+        LOCALSTATE["IndexedDB / File handles<br/>Bookshelf · Reading progress · Session index"]
+    end
+
+    USER --> OUTER
+    USER --> INNER
+    OUTER --> EDITOR
+    OUTER --> WORKSPACE
+    OUTER <--> API
+    OUTER --> IDENTITY
+    INNER -->|OIDC| IDENTITY
+    EDITOR -->|Save and publish| API
+    WORKSPACE -->|Session and project catalogue| API
+    WORKSPACE -->|Git Pull / Push| GITEA
+    API -->|Exact Git commit| GITEA
+    GITEA -->|Durable publication event| CONTROL
+    CONTROL -->|Source identity and job| RENDERER
+    RENDERER <--> ENGINES
+    RENDERER -->|Content-addressed assets| STORAGE
+    RENDERER -->|Signed completion event| CONTROL
+    CONTROL -->|Activate verified version| DATABASE
+    API <--> DATABASE
+    OUTER -->|Read public assets| STORAGE
+    CONTROL -->|Identity, profile, and Tag bindings| INNER
+    INNER <--> SOCIAL
+    INNER -->|Visible candidates and feedback| GORSE
+    GORSE -->|Ranking only| INNER
+    OUTER --> READER
+    OUTER --> DOCS
+    READER -->|Open and resume| PDF
+    LOCALPDF -->|Read locally| PDF
+    READER <--> LOCALSTATE
+    PDF -->|Save reading position| LOCALSTATE
+    OUTER -->|Chat| RINCLIENT
+    WORKSPACE <-->|Read and edit projects| RINCLIENT
+    PDF <-->|Read pages, selections and navigation| RINCLIENT
+    RINCLIENT -->|Question and bounded context| API
+    API -->|Validate session| IDENTITY
+    API -->|Reserve and settle| WALLET
+    WALLET <--> DATABASE
+    API -->|Model requests| RINSERVICE
+    RINSERVICE <--> GATEWAY
+    GATEWAY <--> MODELS
 ```
 
-Git preserves source and revision history, and publications reference specific commits. Reader stores its local bookshelf and progress on your device. Rin shares the site's account and Shangong billing across the website, editor, and reader.
+| Design principle | Implementation |
+| --- | --- |
+| Traceable source | Long-form content uses Git commits in Gitea as its authoritative source, retaining Pull Requests, Issues, and complete history. |
+| Immutable publication | A publication is bound to an exact commit and artifact digest. A failed candidate leaves the previous successful version active. |
+| Separation of responsibilities | Product services own business and identity concerns, the Control Plane orchestrates work, and the Renderer produces results through isolated engines. |
+| Two worlds, one identity | The outer world presents knowledge, while the inner world hosts the local community; stable subjects and OIDC connect them. |
+| Explicit sources of truth | Gitea owns long-form source, Mastodon owns social relationships and posts, and Gorse ranks candidates without owning them. |
+| Local reading | PDFs open on the device; IndexedDB stores the bookshelf and progress, and file handles provide access to the original files. |
+| Rin responsibilities | The browser executes project and PDF tools. Product services handle identity and billing; Rin calls the model gateway for answers and usage. |
 
 ## Community contributions
 

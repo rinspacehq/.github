@@ -36,22 +36,107 @@
 | [new-api](https://github.com/rinspacehq/new-api) | 模型网关与调用计量 |
 | [cline](https://github.com/rinspacehq/cline) | 编码 Agent 与工具调用集成 |
 
-## 架构
+## 架构概览
 
 ```mermaid
-flowchart LR
-    EDITOR["在线编辑器"] --> GIT["Git 源码与协作"]
-    GIT --> PUBLISH["发布服务"]
-    PUBLISH --> RENDER["文档渲染"]
-    RENDER --> WEB["文章与书籍"]
-    TAGS["标签关系"] --- WEB
-    LOCAL["本地 PDF"] --> READER["Reader"]
-    RIN["琳"] --- EDITOR
-    RIN --- READER
-    RIN --- WEB
+flowchart TB
+    USER["读者与创作者"]
+
+    subgraph EXPERIENCE["双世界体验与创作"]
+        OUTER["表世界 Web<br/>React · TypeScript · Vite"]
+        EDITOR["Markdown 编辑器<br/>Milkdown · Crepe · CodeMirror"]
+        WORKSPACE["在线编辑器<br/>TeXlyre · LaTeX · Typst"]
+        READER["Reader 书架<br/>最近阅读 · 搜索 · 续读"]
+        PDF["PDF 阅读界面<br/>EmbedPDF · PDFium"]
+        RINCLIENT["琳聊天与 Agent<br/>浏览器交互 · 项目 / PDF 工具"]
+        DOCS["技术文档<br/>Fumadocs"]
+        INNER["里世界社区<br/>Mastodon · Rails · React"]
+    end
+
+    subgraph PRODUCT["产品服务"]
+        API["业务 API / Runtime<br/>Go · Gin"]
+        IDENTITY["统一身份<br/>Native Session · OIDC"]
+        CONTROL["Control Plane<br/>发布 · 绑定 · 对账"]
+        WALLET["善功账本<br/>费率 · 预留 · 用量结算"]
+        GORSE["Gorse<br/>推荐排序"]
+    end
+
+    subgraph SOURCE["源码与协作"]
+        GITEA["Gitea<br/>Git 历史 · Pull Request · Issue"]
+    end
+
+    subgraph RENDERING["渲染与发布"]
+        RENDERER["Rinspace Renderer<br/>Go API · PostgreSQL · Durable Jobs"]
+        ENGINES["渲染引擎<br/>Markdown · KaTeX · MathJax · Shiki<br/>LaTeXML · TeX SVG · Typst · PDF"]
+    end
+
+    subgraph DATA["数据与制品"]
+        DATABASE["PostgreSQL<br/>产品状态 · 发布索引 · 账本"]
+        STORAGE["CloudBase Storage<br/>内容寻址的公开资源"]
+        SOCIAL["里世界数据层<br/>PostgreSQL · Redis · 对象存储"]
+    end
+
+    subgraph AI["琳与模型服务"]
+        RINSERVICE["琳服务<br/>聊天核心 · Agent 模型调用"]
+        GATEWAY["New API<br/>模型网关 · 用量回执"]
+        MODELS["模型服务商"]
+    end
+
+    subgraph LOCAL["设备本地数据"]
+        LOCALPDF["本地 PDF 文件"]
+        LOCALSTATE["IndexedDB / 文件句柄<br/>书架 · 阅读进度 · 会话索引"]
+    end
+
+    USER --> OUTER
+    USER --> INNER
+    OUTER --> EDITOR
+    OUTER --> WORKSPACE
+    OUTER <--> API
+    OUTER --> IDENTITY
+    INNER -->|OIDC| IDENTITY
+    EDITOR -->|保存与发布| API
+    WORKSPACE -->|会话与项目目录| API
+    WORKSPACE -->|Git Pull / Push| GITEA
+    API -->|精确 Git 提交| GITEA
+    GITEA -->|持久发布事件| CONTROL
+    CONTROL -->|源码身份与任务| RENDERER
+    RENDERER <--> ENGINES
+    RENDERER -->|内容寻址资源| STORAGE
+    RENDERER -->|签名完成事件| CONTROL
+    CONTROL -->|激活验证版本| DATABASE
+    API <--> DATABASE
+    OUTER -->|读取公开资源| STORAGE
+    CONTROL -->|身份、资料与 Tag 绑定| INNER
+    INNER <--> SOCIAL
+    INNER -->|可见候选与反馈| GORSE
+    GORSE -->|仅排序| INNER
+    OUTER --> READER
+    OUTER --> DOCS
+    READER -->|打开与续读| PDF
+    LOCALPDF -->|本地读取| PDF
+    READER <--> LOCALSTATE
+    PDF -->|保存阅读位置| LOCALSTATE
+    OUTER -->|聊天| RINCLIENT
+    WORKSPACE <-->|项目读取与编辑| RINCLIENT
+    PDF <-->|读页、选区与跳页| RINCLIENT
+    RINCLIENT -->|提问与受限上下文| API
+    API -->|会话验证| IDENTITY
+    API -->|预留与结算| WALLET
+    WALLET <--> DATABASE
+    API -->|模型请求| RINSERVICE
+    RINSERVICE <--> GATEWAY
+    GATEWAY <--> MODELS
 ```
 
-源码和修订记录保存在 Git 中，发布绑定具体提交；Reader 的本地书架与进度保存在设备上。琳在主站、编辑器和阅读器中共用账号与善功计费。
+| 设计原则 | 实现方式 |
+| --- | --- |
+| 源码可追溯 | 长文以 Gitea 中的 Git 提交为权威源码，协作保留 Pull Request、Issue 和完整历史。 |
+| 发布不可变 | 发布绑定精确提交和制品摘要；新版本验证失败时继续提供上一成功版本。 |
+| 职责分离 | 产品服务负责业务与身份，Control Plane 负责编排，Renderer 通过独立引擎生成结果。 |
+| 两个世界、一个身份 | 表世界承载知识内容，里世界承载本地社区；二者以稳定主体和 OIDC 连接。 |
+| 明确事实来源 | Gitea 保存长文源码，Mastodon 保存社交关系与推文，Gorse 只对候选内容排序。 |
+| 本地阅读 | PDF 在设备上打开，书架与进度保存在 IndexedDB；文件句柄用于重新访问原文件。 |
+| 琳的职责 | 浏览器执行项目与 PDF 工具；业务服务统一鉴权和计费，琳服务通过模型网关获取回答与用量。 |
 
 ## 社区贡献
 
